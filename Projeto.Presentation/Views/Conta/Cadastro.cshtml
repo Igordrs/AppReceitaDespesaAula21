@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Projeto</title>
+
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+
+</head>
+<body>
+
+    <div class="container"> 
+
+        <h3>Cadastro de Contas</h3>
+        <a href="/Conta/Consulta">Consultar Contas</a>
+        <hr/>
+
+        @model Projeto.Presentation.Models.ContaCadastroViewModel
+
+        <div class="row">
+            <div class="col-md-4">
+
+                @using (Html.BeginForm())
+                {
+                    <label>Nome da Conta:</label>
+                    @Html.TextBoxFor(model => model.Nome, new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(model => model.Nome)
+                    </span>
+                    <br />
+
+                    <label>Valor da Conta (R$):</label>
+                    @Html.TextBoxFor(model => model.Valor, new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(model => model.Valor)
+                    </span>
+                    <br />
+
+                    <label>Data da Conta:</label>
+                    @Html.TextBoxFor(model => model.Data, new { @class = "form-control", @type = "date" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(model => model.Data)
+                    </span>
+                    <br />
+
+                    <label>Categoria:</label>
+                    @Html.EnumDropDownListFor(model => model.Categoria, "Escolha uma Opção", new { @class = "form-control" })
+                    <span class="text-danger">
+                        @Html.ValidationMessageFor(model => model.Categoria)
+                    </span>
+                    <br />
+
+                    <input type="submit" value="Cadastrar Conta" class="btn btn-success" />
+                    <br />
+                    <br />
+
+                    <strong>@ViewBag.Mensagem</strong>
+                }
+
+            </div>
+        </div>
+
+    </div>
+
+    <script src="~/Scripts/jquery-3.0.0.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
+</body>
+</html>

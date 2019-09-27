@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Projeto</title>
+
+    <!-- folhas de estilo CSS -->
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+
+</head>
+<body>
+
+    <div class="container"> 
+
+        <h3>Consulta de Contas</h3>
+        <a href="/Conta/Cadastro">Cadastrar Contas</a>
+        <hr/>
+
+        <div class="row">
+            <div class="col-md-3">
+
+                <h4>Filtrar Contas:</h4>
+
+                <label>Data de:</label>
+                <input type="date" id="datade" class="form-control"/>
+                <br/>
+
+                <label>Data até:</label>
+                <input type="date" id="dataate" class="form-control" />
+                <br />
+
+                <button id="btnconsulta" class="btn btn-success">
+                    Consultar Contas
+                </button>
+
+            </div>
+            <div class="col-md-9">
+                <div id="grafico"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- arquivos javascript -->
+    <script src="~/Scripts/jquery-3.0.0.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
+    <!-- bibliotecas do HIGHCHART por CDN -->
+    <script src="http://code.highcharts.com/highcharts.js"></script>
+    <script src="http://code.highcharts.com/modules/exporting.js"></script>
+
+    <script>
+        //quando a página for carregada, faça..
+        $(document).ready(function () {
+
+            //criando um evento executado quando o botão for clicado..
+            $("#btnconsulta").click(function () {
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Conta/ConsultarContas",
+                    data: {
+                        dataIni: $("#datade").val(),
+                        dataFim: $("#dataate").val()
+                    },
+                    success: function (model) {
+
+                        //configurar o eixo de valores do gráfico (y -> data)
+                        $.each(model, function (i, point) {
+                            point.y = point.data;
+                        });
+
+                        $("#grafico").highcharts({
+                            chart: { type: "pie" },
+                            title: { text: "Somatório de Receitas e Despesas" },
+                            series: [{ data: model }]
+                        });
+
+                    },
+                    error: function (e) {
+                        console.log(e);
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
